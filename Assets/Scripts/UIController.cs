@@ -9,6 +9,7 @@ public class UIController : MonoBehaviour
     public int totalStars = 0;
 
     public GameObject mainMenu;
+    public GameObject controlsMenu;
     public GameObject pauseMenu;
     public GameObject inGameUI;
     public GameObject winMenuLvlOne;
@@ -30,6 +31,7 @@ public class UIController : MonoBehaviour
         winMenuLvlOne.SetActive(false);
         winMenuLvlTwo.SetActive(false);
         gameOverMenu.SetActive(false);
+        controlsMenu.SetActive(false);
 
         lvlOne.SetActive(true);
         lvlTwo.SetActive(false);
@@ -41,6 +43,13 @@ public class UIController : MonoBehaviour
     {
         //main menu
         if (mainMenu.activeSelf == true)
+        {
+            inGameUI.SetActive(false);
+            Time.timeScale = 0;
+            return;
+        }
+
+        if (controlsMenu.activeSelf == true)
         {
             inGameUI.SetActive(false);
             Time.timeScale = 0;
@@ -88,6 +97,7 @@ public class UIController : MonoBehaviour
             Time.timeScale = 0;
             return;
         }
+        
         else if(playerController.starCount == totalStars && winLvlController.lvlTwoStarted == true)
         {
             winMenuLvlTwo.SetActive(true);

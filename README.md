@@ -1,1 +1,2 @@
-# Space_PacMan
+# Space PacMan
+### A video game based off of PacMan
