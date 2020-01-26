@@ -22,6 +22,7 @@ public class WinLvlController : MonoBehaviour
         {
             lvlOne.SetActive(false);
             this.gameObject.SetActive(false);
+            playerController.timeLeft = 3;
         }
     }
     public void GoToLvlTwo()

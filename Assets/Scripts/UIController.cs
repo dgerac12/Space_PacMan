@@ -10,6 +10,7 @@ public class UIController : MonoBehaviour
 
     public GameObject mainMenu;
     public GameObject controlsMenu;
+    public GameObject creditsMenu;
     public GameObject pauseMenu;
     public GameObject inGameUI;
     public GameObject winMenuLvlOne;
@@ -32,7 +33,7 @@ public class UIController : MonoBehaviour
         winMenuLvlTwo.SetActive(false);
         gameOverMenu.SetActive(false);
         controlsMenu.SetActive(false);
-
+        creditsMenu.SetActive(false);
         lvlOne.SetActive(true);
         lvlTwo.SetActive(false);
 
@@ -42,7 +43,7 @@ public class UIController : MonoBehaviour
     void Update()
     {
         //main menu
-        if (mainMenu.activeSelf == true)
+        if (mainMenu.activeSelf == true || winMenuLvlOne.activeSelf == true || winMenuLvlOne.activeSelf == true)
         {
             inGameUI.SetActive(false);
             Time.timeScale = 0;
@@ -55,6 +56,14 @@ public class UIController : MonoBehaviour
             Time.timeScale = 0;
             return;
         }
+
+        if (creditsMenu.activeSelf == true)
+        {
+            inGameUI.SetActive(false);
+            Time.timeScale = 0;
+            return;
+        }
+
         else if (mainMenu.activeSelf == false)
         {
             inGameUI.SetActive(true);
@@ -76,6 +85,7 @@ public class UIController : MonoBehaviour
         
         if(isPaused == true)
         {
+            playerController.timerText.text = "";
             Time.timeScale = 0;
             return;
         }
@@ -84,7 +94,6 @@ public class UIController : MonoBehaviour
         if(playerController.lives == 0)
         {
             gameOverMenu.SetActive(true);
-            //Time.timeScale = 0;
             return;
         }
 

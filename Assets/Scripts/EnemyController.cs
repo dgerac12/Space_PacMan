@@ -28,36 +28,43 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        if (playerController.hasMultiplier == true && wasKilled == false)
-        {
-            if (playerController.starCount < requiredStars)
-            {
-                currSpeed = 0;
-            }
-            else
-            {
-                currSpeed = 0.03f;
-            }
-        }
-        else if (playerController.starCount < requiredStars || wasKilled == true)
+        if (playerController.speed == 0)
         {
             currSpeed = 0;
-            if (wasKilled == true)
-            {
-                StartCoroutine(Wait(5, () =>
-                {
-                    if(playerController.hasMultiplier)
-                        currSpeed = 0.03f;
-                    else
-                        currSpeed = speed;
-                    
-                    wasKilled = false;
-                }));
-            }
         }
-        else if (playerController.hasMultiplier == false && playerController.starCount >= requiredStars)
+        else
         {
-            currSpeed = speed;
+            if (playerController.hasMultiplier == true && wasKilled == false)
+            {
+                if (playerController.starCount < requiredStars)
+                {
+                    currSpeed = 0;
+                }
+                else
+                {
+                    currSpeed = 0.03f;
+                }
+            }
+            else if (playerController.starCount < requiredStars || wasKilled == true)
+            {
+                currSpeed = 0;
+                if (wasKilled == true)
+                {
+                    StartCoroutine(Wait(5, () =>
+                    {
+                        if (playerController.hasMultiplier)
+                            currSpeed = 0.03f;
+                        else
+                            currSpeed = speed;
+
+                        wasKilled = false;
+                    }));
+                }
+            }
+            else if (playerController.hasMultiplier == false && playerController.starCount >= requiredStars)
+            {
+                currSpeed = speed;
+            }
         }
     }
     void FixedUpdate()

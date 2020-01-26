@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     public Vector2 playerStart;
     private Animator anim;
 
+    public GameObject uiManager;
+    private UIController uiController;
+
     //Jellyfish References for lvl 1
     public GameObject yellowJelly;
     public GameObject purpleJelly;
@@ -35,6 +38,7 @@ public class PlayerController : MonoBehaviour
     //text references
     public Text pointsText;
     public Text livesText;
+    public Text timerText;
 
     //numeric values references
     public int points;
@@ -42,6 +46,8 @@ public class PlayerController : MonoBehaviour
     public int lives;
     private int coCount = 0;
     private bool isVulnerable = false; //this is for jelly vulnerability
+    public float timeLeft;
+    private float tempSpeed;
 
     //audio references
     public AudioClip pickupSound;
@@ -52,11 +58,14 @@ public class PlayerController : MonoBehaviour
     public AudioSource enemySource;
     public AudioClip bgSound;
     public AudioSource bgSource;
+    public AudioClip powerSound;
+    public AudioSource powerSource;
 
     void Start()
     {
         anim = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
+        uiController = uiManager.GetComponent<UIController>();
 
         yellowAnim = yellowJelly.GetComponent<Animator>();
         purpleAnim = purpleJelly.GetComponent<Animator>();
@@ -72,12 +81,15 @@ public class PlayerController : MonoBehaviour
         overSource.clip = overSound;
         enemySource.clip = enemySound;
         bgSource.clip = bgSound;
+        powerSource.clip = powerSound;
 
         //these can be changed or removed, in the case of lives. just leaving it here for testing
+        tempSpeed = speed;
         points = 0;
         lives = 2;
         SetPointsText();
         SetLivesText();
+        timerText.text = "";
     }
 
     private void Update()
@@ -85,6 +97,19 @@ public class PlayerController : MonoBehaviour
         if(coCount == 0)
         {
             hasMultiplier = false;
+        }
+
+        //timeLeft = Mathf.Round(timeLeft);
+        timeLeft -= Time.deltaTime;
+        if(timeLeft > 0 && uiController.mainMenu.activeSelf == false && uiController.controlsMenu.activeSelf == false && uiController.creditsMenu.activeSelf == false)
+        {
+            timerText.text = timeLeft.ToString("0");
+            speed = 0;
+        }
+        else if(timeLeft < 0)
+        {
+            timerText.text = ("");
+            speed = tempSpeed;
         }
     }
 
@@ -145,6 +170,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Multiplier")) //triggers vulnerability coroutine
             {
                 other.gameObject.SetActive (false);
+                powerSource.Play();
                 isVulnerable = true;
                 hasMultiplier = true;
                 coCount++;
@@ -187,6 +213,7 @@ public class PlayerController : MonoBehaviour
             {
                 enemySource.Play();
                 transform.position = playerStart;
+                timeLeft = 3;
             }
         }
     }
